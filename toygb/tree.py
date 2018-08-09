@@ -21,7 +21,7 @@ class Tree():
         self.leafs_count = 0
         self.deep = 0
         self.task_map = {"classifier": [self._gini, self._gain_gini],
-                    "regresion": [self._ls, self._gain_ls]}
+                    "regression": [self._ls, self._gain_ls]}
 
     def _gini(self, y):
         """
@@ -68,7 +68,7 @@ class Tree():
         :param y2:
         :return:
         """
-        return self._ls(y1) + Tree._ls(y2)
+        return self._ls(y1) + self._ls(y2)
 
 
     def _best_split(self, X, y, f):
@@ -192,7 +192,7 @@ class Tree():
         if self.task == "classifier":
             node.data = (y == 1).sum()/y.size
         elif self.task == "regression":
-            node.data = np.average(y)
+            node.data = np.average(y.reshape(1,-1))
         if self._stop(X,y):
             return node
         best_feature, best_point , best_feature_mask= self._best_split(X, y, f)
@@ -303,7 +303,7 @@ def test2():
     print(tree._get_leafs())
     print(tree._get_leafs_count())
     print(y)
-    print(tree.predict(X))
+    print(tree.predict_proba(X))
 
 
 if __name__ == "__main__":
