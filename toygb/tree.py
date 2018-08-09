@@ -58,7 +58,7 @@ class Tree():
         :param y:
         :return:
         """
-        return np.var(y)
+        return 0.0 if np.isnan(np.var(y.reshape(-1,1))) else np.var(y.reshape(-1,1))
 
 
     def _gain_ls(self, y1, y2):
@@ -297,13 +297,13 @@ def test2():
     mask = data.target < 2
     X = data.data[mask]
     y = data.target[mask]
-    tree = Tree()
+    tree = Tree(task="regression")
     tree.fit(X,y)
     print(tree._get_deep())
     print(tree._get_leafs())
     print(tree._get_leafs_count())
     print(y)
-    print(tree.predict_proba(X))
+    print(tree.predict(X))
 
 
 if __name__ == "__main__":
